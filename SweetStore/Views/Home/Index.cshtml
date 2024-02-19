@@ -8,3 +8,11 @@
     @Html.ActionLink("View Treats", "Index", "Treats") |
     @Html.ActionLink("View Flavors", "Index", "Flavors")
 </p>
+
+<div>
+    <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Login</a>
+    <a href="@Url.Action("Register", "Account")" class="btn btn-primary">Register</a>
+    <form id="logoutForm" asp-controller="Account" asp-action="LogOff" method="post" class="d-inline">
+        <button type="submit" class="btn btn-primary">Sign out</button>
+    </form>
+</div>

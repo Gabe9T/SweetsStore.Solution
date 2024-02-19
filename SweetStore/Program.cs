@@ -1,33 +1,58 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using SweetStore.Models;
+using Microsoft.AspNetCore.Identity;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+namespace SweetStore 
+{
+  class Program
+  {
+    static void Main(string[] args)
+    {
 
-builder.Services.AddControllersWithViews();
+      WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<SweetStoreContext>(
-                  dbContextOptions => dbContextOptions
-                    .UseMySql(
-                      builder.Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(builder.Configuration["ConnectionStrings:DefaultConnection"]
-                    )
-                  )
-                );
+      builder.Services.AddControllersWithViews();
 
-WebApplication app = builder.Build();
+      builder.Services.AddDbContext<SweetStoreContext>(
+                        dbContextOptions => dbContextOptions
+                          .UseMySql(
+                            builder.Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(builder.Configuration["ConnectionStrings:DefaultConnection"]
+                          )
+                        )
+                      );
 
-// app.UseDeveloperExceptionPage();
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+      builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<SweetStoreContext>()
+                .AddDefaultTokenProviders();
 
-app.UseRouting();
+      builder.Services.Configure<IdentityOptions>(options =>
+      {
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequiredLength = 6;
+        options.Password.RequiredUniqueChars = 1;
+      });
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+      WebApplication app = builder.Build();
 
-app.Run();
+      app.UseHttpsRedirection();
+      app.UseStaticFiles();
+
+      app.UseRouting();
+
+      app.UseAuthentication();
+      app.UseAuthorization();
+
+      app.MapControllerRoute(
+          name: "default",
+          pattern: "{controller=Home}/{action=Index}/{id?}"
+        );
+
+      app.Run();
+    }
+  }
+}

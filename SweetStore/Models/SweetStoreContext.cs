@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace SweetStore.Models
 {
-    public class SweetStoreContext : DbContext
+    public class SweetStoreContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Treat> Treats { get; set; }
         public DbSet<Flavor> Flavors { get; set; }
