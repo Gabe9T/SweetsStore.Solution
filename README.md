@@ -39,3 +39,5 @@ create a new application to market sweets and savory treats. build an applicatio
 * Optionally, you can run "dotnet build" to compile this application without running it.
 
 ## Known Bugs
+
+* old repo messed up here is link to old one if needed https://github.com/Gabe9T/SweetsStore.Solution2/tree/gabe
