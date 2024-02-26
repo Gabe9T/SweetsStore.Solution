@@ -77,17 +77,17 @@ namespace SweetStore.Controllers
         }
         
 [HttpGet]
-public ActionResult AddFlavor(int id)
+public ActionResult AddTreat(int id)
 {
-    var treat = _db.Treats.FirstOrDefault(t => t.TreatId == id);
-    if (treat == null)
+    var flavor = _db.Flavors.FirstOrDefault(f => f.FlavorId == id);
+    if (flavor == null)
     {
         return NotFound();
     }
 
-    ViewBag.TreatId = treat.TreatId;
-    ViewBag.Flavors = _db.Flavors.ToList();
-    return View(treat);
+    ViewBag.FlavorId = flavor.FlavorId;
+    ViewBag.Treats = _db.Treats.ToList();
+    return View(flavor);
 }
 
 [HttpPost]
@@ -99,14 +99,12 @@ public ActionResult AddTreat(int flavorId, int treatId)
 
     if (flavor != null && treat != null)
     {
-        if (flavor.TreatFlavors.Any(ft => ft.TreatId == treatId))
+        if (!flavor.TreatFlavors.Any(ft => ft.TreatId == treatId))
         {
-            return RedirectToAction("Details", new { id = flavorId });
+            var joinEntity = new TreatFlavor { FlavorId = flavorId, TreatId = treatId };
+            _db.TreatFlavors.Add(joinEntity);
+            _db.SaveChanges();
         }
-
-        var joinEntity = new TreatFlavor { FlavorId = flavorId, TreatId = treatId };
-        _db.TreatFlavors.Add(joinEntity);
-        _db.SaveChanges();
     }
 
     return RedirectToAction("Details", new { id = flavorId });
