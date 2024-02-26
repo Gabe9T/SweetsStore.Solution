@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using SweetStore.Models;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization; 
 
 namespace SweetStore.Controllers
 {
@@ -19,12 +20,14 @@ namespace SweetStore.Controllers
             return View(_db.Flavors.ToList());
         }
 
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Flavor flavor)
         {
             _db.Flavors.Add(flavor);
@@ -48,6 +51,7 @@ namespace SweetStore.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(Flavor flavor)
         {
             _db.Entry(flavor).State = EntityState.Modified;
@@ -55,6 +59,7 @@ namespace SweetStore.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public ActionResult Delete(int id)
         {
             var thisFlavor = _db.Flavors.FirstOrDefault(flavor => flavor.FlavorId == id);
@@ -62,6 +67,7 @@ namespace SweetStore.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
             var thisFlavor = _db.Flavors.FirstOrDefault(flavor => flavor.FlavorId == id);
@@ -85,6 +91,7 @@ public ActionResult AddFlavor(int id)
 }
 
 [HttpPost]
+[Authorize]
 public ActionResult AddTreat(int flavorId, int treatId)
 {
     var flavor = _db.Flavors.Include(f => f.TreatFlavors).FirstOrDefault(f => f.FlavorId == flavorId);
