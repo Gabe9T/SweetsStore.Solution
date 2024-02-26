@@ -5,8 +5,8 @@
 
     <h4>Add a Flavor to: @Model.Name</h4>
 
-    @using (Html.BeginForm())
-    {
+@using (Html.BeginForm("AddFlavor", "Treats", FormMethod.Post))
+{
         @Html.HiddenFor(model => model.TreatId)
 
         @Html.Label("Select a Flavor")
