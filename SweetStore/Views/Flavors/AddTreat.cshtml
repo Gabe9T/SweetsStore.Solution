@@ -1,13 +1,13 @@
-@model SweetStore.Models.Treat
+@model SweetStore.Models.Flavor
 
 <div class="content">
     <h2>Add a Treat</h2>
 
     <h4>Add a Treat to: @Model.Name</h4>
 
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("AddTreat", "Flavors", FormMethod.Post))
     {
-        @Html.HiddenFor(model => model.TreatId)
+        @Html.HiddenFor(model => model.FlavorId)
 
         <div class="form-group">
             @Html.Label("Select a Treat")
@@ -17,7 +17,7 @@
         <button type="submit" class="btn btn-primary">Add</button>
     }
 
-    <p>@Html.ActionLink("Back to Treats", "Index", "Treats", null, new { @class = "btn btn-secondary" })</p>
+    <p>@Html.ActionLink("Back to Flavors", "Index", "Flavors")</p>
 
-    @Html.ActionLink("Home", "Index", "Home", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Home", "Index", "Home", null, new { @class = "btn btn-blue" })
 </div>
